@@ -133,7 +133,16 @@ void Viewer::computeNormalsWithConstantWeights()
 
     for (auto v : mesh.vertices())
     {
-        Mesh::Halfedge_around_vertex_circulator he_vert_circ;
+        Mesh::Halfedge_around_vertex_circulator he_vert_circ, he_vert_circ_end;
+
+        he_vert_circ = mesh.halfedges(v);
+        he_vert_circ_end = he_vert_circ;
+
+        do
+        {
+            Mesh::Halfedge he_out = *he_vert_circ;
+
+        } while (++he_vert_circ != he_vert_circ_end);
     }
 }
 
