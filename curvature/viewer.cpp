@@ -141,20 +141,25 @@ void Viewer::computeNormalsWithConstantWeights()
         Vec3f vert_normal(0.0, 0.0, 0.0);
         int num_tris = 0;
 
+        Mesh::Halfedge he_out, he_back, he_next;
+        Point pos_center, pos_first, pos_second;
+        Vec3f vec_a, vec_b, tri_normal;
+
+        pos_center = mesh.position(v);
+
         do
         {
-            Mesh::Halfedge he_out = *he_vert_circ;
-            Mesh::Halfedge he_back = mesh.opposite_halfedge(he_out);
-            Mesh::Halfedge he_next = mesh.next_halfedge(he_back);
+            he_out = *he_vert_circ;
+            he_back = mesh.opposite_halfedge(he_out);
+            he_next = mesh.next_halfedge(he_back);
 
-            Point pos_center = mesh.position(v);
-            Point pos_first = mesh.position(mesh.to_vertex(he_out));
-            Point pos_second = mesh.position(mesh.to_vertex(he_next));
+            pos_first = mesh.position(mesh.to_vertex(he_out));
+            pos_second = mesh.position(mesh.to_vertex(he_next));
 
-            Vec3f vec_a = pos_first - pos_center;
-            Vec3f vec_b = pos_second - pos_center;
+            vec_a = pos_first - pos_center;
+            vec_b = pos_second - pos_center;
 
-            Vec3f tri_normal = cross(vec_a, vec_b);
+            tri_normal = cross(vec_a, vec_b);
 
             vert_normal += tri_normal;
             num_tris++;
