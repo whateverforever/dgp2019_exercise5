@@ -131,6 +131,10 @@ void Viewer::computeNormalsWithConstantWeights()
     // technique (see .pdf) and store it inside v_cste_weights_n[v]
     // ------------- IMPLEMENT HERE ---------
 
+    Mesh::Halfedge he_out, he_back, he_next;
+    Point pos_center, pos_first, pos_second;
+    Vec3f vec_a, vec_b, tri_normal;
+
     for (auto v : mesh.vertices())
     {
         Mesh::Halfedge_around_vertex_circulator he_vert_circ, he_vert_circ_end;
@@ -140,10 +144,6 @@ void Viewer::computeNormalsWithConstantWeights()
 
         Vec3f vert_normal(0.0, 0.0, 0.0);
         int num_tris = 0;
-
-        Mesh::Halfedge he_out, he_back, he_next;
-        Point pos_center, pos_first, pos_second;
-        Vec3f vec_a, vec_b, tri_normal;
 
         pos_center = mesh.position(v);
 
