@@ -148,8 +148,12 @@ void Viewer::computeNormalsWithConstantWeights()
             Point pos_first = mesh.position(mesh.to_vertex(he_out));
             Point pos_second = mesh.position(mesh.to_vertex(he_next));
 
-            auto vec_a = pos_first - pos_center;
-            auto vec_b = pos_second - pos_center;
+            Vec3f vec_a = pos_first - pos_center;
+            Vec3f vec_b = pos_second - pos_center;
+
+            Vec3f normal = cross(vec_a, vec_b);
+
+            v_cste_weights_n[v] = normal;
 
         } while (++he_vert_circ != he_vert_circ_end);
     }
