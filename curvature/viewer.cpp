@@ -138,6 +138,9 @@ void Viewer::computeNormalsWithConstantWeights()
         he_vert_circ = mesh.halfedges(v);
         he_vert_circ_end = he_vert_circ;
 
+        Vec3f vert_normal(0.0, 0.0, 0.0);
+        int num_tris = 0;
+
         do
         {
             Mesh::Halfedge he_out = *he_vert_circ;
@@ -151,11 +154,14 @@ void Viewer::computeNormalsWithConstantWeights()
             Vec3f vec_a = pos_first - pos_center;
             Vec3f vec_b = pos_second - pos_center;
 
-            Vec3f normal = cross(vec_a, vec_b);
+            Vec3f tri_normal = cross(vec_a, vec_b);
 
-            v_cste_weights_n[v] = normal;
+            vert_normal += tri_normal;
+            num_tris++;
 
         } while (++he_vert_circ != he_vert_circ_end);
+
+        v_cste_weights_n[v] = vert_normal / num_tris;
     }
 }
 
