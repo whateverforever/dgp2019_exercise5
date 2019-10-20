@@ -14,8 +14,8 @@
 #include "viewer.h"
 #include <surface_mesh/Surface_mesh.h>
 
-using std::min;
 using std::max;
+using std::min;
 using namespace surface_mesh;
 
 typedef Surface_mesh Mesh;
@@ -28,18 +28,21 @@ typedef Surface_mesh Mesh;
 //        but it allows you to have all the things you need here.
 // ========================================================================
 
-void Viewer::calc_weights() {
+void Viewer::calc_weights()
+{
     calc_edges_weights();
     calc_vertices_weights();
 }
 
-void Viewer::calc_edges_weights() {
+void Viewer::calc_edges_weights()
+{
     Mesh::Halfedge h0, h1, h2;
     Mesh::Vertex v0, v1;
     Point p0, p1, p2, d0, d1;
     Scalar w;
     auto eweight = mesh.edge_property<Scalar>("e:weight", 0);
-    for (auto e: mesh.edges()) {
+    for (auto e : mesh.edges())
+    {
         w = 0.0;
 
         h0 = mesh.halfedge(e, 0);
@@ -67,41 +70,49 @@ void Viewer::calc_edges_weights() {
     }
 }
 
-void Viewer::calc_vertices_weights() {
+void Viewer::calc_vertices_weights()
+{
     Mesh::Face_around_vertex_circulator vf_c, vf_end;
     Mesh::Vertex_around_face_circulator fv_c;
     Scalar area;
     auto vweight = mesh.vertex_property<Scalar>("v:weight", 0);
 
-    for (auto v: mesh.vertices()) {
+    for (auto v : mesh.vertices())
+    {
         area = 0.0;
         vf_c = mesh.faces(v);
 
-        if(!vf_c) {
+        if (!vf_c)
+        {
             continue;
         }
 
         vf_end = vf_c;
 
-        do {
+        do
+        {
             fv_c = mesh.vertices(*vf_c);
 
-            const Point& P = mesh.position(*fv_c);  ++fv_c;
-            const Point& Q = mesh.position(*fv_c);  ++fv_c;
-            const Point& R = mesh.position(*fv_c);
+            const Point &P = mesh.position(*fv_c);
+            ++fv_c;
+            const Point &Q = mesh.position(*fv_c);
+            ++fv_c;
+            const Point &R = mesh.position(*fv_c);
 
-            area += norm(cross(Q-P, R-P)) * 0.5f * 0.3333f;
+            area += norm(cross(Q - P, R - P)) * 0.5f * 0.3333f;
 
-        } while(++vf_c != vf_end);
+        } while (++vf_c != vf_end);
 
         vweight[v] = 0.5 / area;
     }
 }
 
-void Viewer::computeValence() {
-   Mesh::Vertex_property<Scalar> vertex_valence =
-            mesh.vertex_property<Scalar>("v:valence", 0);
-    for (auto v: mesh.vertices()) {
+void Viewer::computeValence()
+{
+    Mesh::Vertex_property<Scalar> vertex_valence =
+        mesh.vertex_property<Scalar>("v:valence", 0);
+    for (auto v : mesh.vertices())
+    {
         vertex_valence[v] = mesh.valence(v);
     }
 }
@@ -109,58 +120,61 @@ void Viewer::computeValence() {
 // ========================================================================
 // EXERCISE 1.1
 // ========================================================================
-void Viewer::computeNormalsWithConstantWeights() {
+void Viewer::computeNormalsWithConstantWeights()
+{
     Point default_normal(0.0, 1.0, 0.0);
     Mesh::Vertex_property<Point> v_cste_weights_n =
-            mesh.vertex_property<Point>("v:cste_weights_n", default_normal);
+        mesh.vertex_property<Point>("v:cste_weights_n", default_normal);
 
     // ------------- IMPLEMENT HERE ---------
     // Compute the normals for each vertex v in the mesh using the constant weights
     // technique (see .pdf) and store it inside v_cste_weights_n[v]
     // ------------- IMPLEMENT HERE ---------
 
-    
+    for (auto v : mesh.vertices())
+    {
+        Mesh::Halfedge_around_vertex_circulator he_vert_circ;
+    }
 }
 
 // ========================================================================
 // EXERCISE 1.2
 // ========================================================================
-void Viewer::computeNormalsByAreaWeights() {
+void Viewer::computeNormalsByAreaWeights()
+{
     Point default_normal(0.0, 1.0, 0.0);
     Mesh::Vertex_property<Point> v_area_weights_n =
-            mesh.vertex_property<Point>("v:area_weight_n", default_normal);
+        mesh.vertex_property<Point>("v:area_weight_n", default_normal);
 
     // ------------- IMPLEMENT HERE ---------
     // Compute the normals for each vertex v in the mesh using the weights proportionals
     // to the areas technique (see .pdf) and store inside v_area_weights_n[v]
     // ------------- IMPLEMENT HERE ---------
-
-    
 }
 
 // ========================================================================
 // EXERCISE 1.3
 // ========================================================================
-void Viewer::computeNormalsWithAngleWeights() {
+void Viewer::computeNormalsWithAngleWeights()
+{
     Point default_normal(0.0, 1.0, 0.0);
     Mesh::Vertex_property<Point> v_angle_weights_n =
-            mesh.vertex_property<Point>("v:angle_weight_n", default_normal);
+        mesh.vertex_property<Point>("v:angle_weight_n", default_normal);
 
     // ------------- IMPLEMENT HERE ---------
     // Compute the normals for each vertex v in the mesh using the weights proportionals
     // to the angles technique (see .pdf) and store it inside v_angle_weights_n[v]
     // ------------- IMPLEMENT HERE ---------
-
-    
 }
 
 // ========================================================================
 // EXERCISE 2.1
 // ========================================================================
-void Viewer::calc_uniform_laplacian() {
+void Viewer::calc_uniform_laplacian()
+{
     Mesh::Vertex_property<Scalar> v_uniLaplace = mesh.vertex_property<Scalar>("v:uniLaplace", 0);
-    Mesh::Vertex_around_vertex_circulator   vv_c, vv_end;
-    Point             laplace(0.0);
+    Mesh::Vertex_around_vertex_circulator vv_c, vv_end;
+    Point laplace(0.0);
     min_uniLaplace = 1000;
     max_uniLaplace = -1000;
 
@@ -170,17 +184,16 @@ void Viewer::calc_uniform_laplacian() {
     // mesh called v_uniLaplace[v].
     // Store min and max values of v_uniLaplace[v] in min_uniLaplace and max_uniLaplace.
     // ------------- IMPLEMENT HERE ---------
-
-    
 }
 
 // ========================================================================
 // EXERCISE 2.2
 // ========================================================================
-void Viewer::calc_mean_curvature() {
-    Mesh::Vertex_property<Scalar>  v_curvature = mesh.vertex_property<Scalar>("v:curvature", 0);
+void Viewer::calc_mean_curvature()
+{
+    Mesh::Vertex_property<Scalar> v_curvature = mesh.vertex_property<Scalar>("v:curvature", 0);
     Mesh::Edge_property<Scalar> e_weight = mesh.edge_property<Scalar>("e:weight", 0);
-    Mesh::Vertex_property<Scalar>  v_weight = mesh.vertex_property<Scalar>("v:weight", 0);
+    Mesh::Vertex_property<Scalar> v_weight = mesh.vertex_property<Scalar>("v:weight", 0);
     Mesh::Halfedge_around_vertex_circulator vh_c, vh_end;
     Mesh::Vertex neighbor_v;
     Mesh::Edge e;
@@ -194,14 +207,13 @@ void Viewer::calc_mean_curvature() {
     // Save your approximation in v_curvature vertex property of the mesh.
     // Use the weights from calc_weights(): e_weight and v_weight
     // ------------- IMPLEMENT HERE ---------
-
-    
 }
 
 // ========================================================================
 // EXERCISE 2.3
 // ========================================================================
-void Viewer::calc_gauss_curvature() {
+void Viewer::calc_gauss_curvature()
+{
     Mesh::Vertex_property<Scalar> v_gauss_curvature = mesh.vertex_property<Scalar>("v:gauss_curvature", 0);
     Mesh::Vertex_property<Scalar> v_weight = mesh.vertex_property<Scalar>("v:weight", 0);
     Mesh::Vertex_around_vertex_circulator vv_c, vv_c2, vv_end;
@@ -218,6 +230,4 @@ void Viewer::calc_gauss_curvature() {
     // you pass to the acos function is between -1.0 and 1.0.
     // Use the v_weight property for the area weight.
     // ------------- IMPLEMENT HERE ---------
-
-    
 }
