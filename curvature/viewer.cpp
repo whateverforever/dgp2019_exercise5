@@ -141,6 +141,15 @@ void Viewer::computeNormalsWithConstantWeights()
         do
         {
             Mesh::Halfedge he_out = *he_vert_circ;
+            Mesh::Halfedge he_back = mesh.opposite_halfedge(he_out);
+            Mesh::Halfedge he_next = mesh.next_halfedge(he_back);
+
+            Point pos_center = mesh.position(v);
+            Point pos_first = mesh.position(mesh.to_vertex(he_out));
+            Point pos_second = mesh.position(mesh.to_vertex(he_next));
+
+            auto vec_a = pos_first - pos_center;
+            auto vec_b = pos_second - pos_center;
 
         } while (++he_vert_circ != he_vert_circ_end);
     }
