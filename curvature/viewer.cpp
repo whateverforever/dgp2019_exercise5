@@ -184,6 +184,42 @@ void Viewer::computeNormalsByAreaWeights()
     // Compute the normals for each vertex v in the mesh using the weights proportionals
     // to the areas technique (see .pdf) and store inside v_area_weights_n[v]
     // ------------- IMPLEMENT HERE ---------
+
+    Mesh::Halfedge he_out, he_back, he_next;
+    Point pos_center, pos_first, pos_second;
+    Vec3f vec_a, vec_b, tri_normal;
+
+    for (auto v : mesh.vertices())
+    {
+        Mesh::Halfedge_around_vertex_circulator he_vert_circ, he_vert_circ_end;
+
+        he_vert_circ = mesh.halfedges(v);
+        he_vert_circ_end = he_vert_circ;
+
+        Vec3f vert_normal(0.0, 0.0, 0.0);
+        int num_tris = 0;
+
+        pos_center = mesh.position(v);
+
+        do
+        {
+            he_out = *he_vert_circ;
+            he_back = mesh.opposite_halfedge(he_out);
+            he_next = mesh.next_halfedge(he_back);
+
+            pos_first = mesh.position(mesh.to_vertex(he_out));
+            pos_second = mesh.position(mesh.to_vertex(he_next));
+
+            vec_a = pos_center - pos_first;
+            vec_b = pos_second - pos_center;
+
+            tri_normal = cross(vec_a, vec_b);
+
+            vert_normal += tri_normal;
+            num_tris++;
+
+        } while (++he_vert_circ != he_vert_circ_end);
+    }
 }
 
 // ========================================================================
