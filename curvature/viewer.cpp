@@ -197,7 +197,6 @@ void Viewer::computeNormalsByAreaWeights()
         he_vert_circ_end = he_vert_circ;
 
         Vec3f vert_normal(0.0, 0.0, 0.0);
-        float sum_area = 0.0;
 
         pos_center = mesh.position(v);
 
@@ -218,8 +217,7 @@ void Viewer::computeNormalsByAreaWeights()
             float angle = acos(dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b)));
             float area_tri = 0.5 * norm(tri_normal) / sin(angle);
 
-            vert_normal += area_tri * tri_normal;
-            sum_area += area_tri;
+            vert_normal += area_tri * normalize(tri_normal);
 
         } while (++he_vert_circ != he_vert_circ_end);
 
@@ -254,7 +252,6 @@ void Viewer::computeNormalsWithAngleWeights()
         he_vert_circ_end = he_vert_circ;
 
         Vec3f vert_normal(0.0, 0.0, 0.0);
-        float sum_angles = 0.0;
 
         pos_center = mesh.position(v);
 
@@ -267,16 +264,14 @@ void Viewer::computeNormalsWithAngleWeights()
             pos_first = mesh.position(mesh.to_vertex(he_out));
             pos_second = mesh.position(mesh.to_vertex(he_next));
 
-            vec_a = pos_center - pos_first;
+            vec_a = pos_first - pos_center;
             vec_b = pos_second - pos_center;
 
-            tri_normal = normalize(cross(vec_a, vec_b));
+            tri_normal = -cross(vec_a, vec_b);
 
             float angle = acos(dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b)));
 
-            vert_normal += angle * tri_normal;
-            sum_angles += angle;
-
+            vert_normal += angle * normalize(tri_normal);
         } while (++he_vert_circ != he_vert_circ_end);
 
         v_angle_weights_n[v] = vert_normal;
