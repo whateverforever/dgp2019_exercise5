@@ -405,7 +405,13 @@ void Viewer::calc_gauss_curvature()
 
         } while (he_circulator != he_circulator_end);
 
-        float gauss_curvature = (2 * M_PI - sum_incident_angles) * v_weight[v] * 2;
+        float gauss_curvature = (2 * M_PI - sum_incident_angles) * v_weight[v];
         v_gauss_curvature[v] = gauss_curvature;
+
+        if (gauss_curvature > max_gauss_curvature) {
+            max_gauss_curvature = gauss_curvature;
+        } else if (gauss_curvature < min_gauss_curvature) {
+            min_gauss_curvature = gauss_curvature;
+        }
     }
 }
