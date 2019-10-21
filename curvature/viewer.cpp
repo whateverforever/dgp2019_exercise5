@@ -187,6 +187,7 @@ void Viewer::computeNormalsByAreaWeights()
     Mesh::Halfedge he_out, he_back, he_next;
     Point pos_center, pos_first, pos_second;
     Vec3f vec_a, vec_b, tri_normal;
+    float area_tri;
 
     for (auto v : mesh.vertices())
     {
@@ -212,8 +213,7 @@ void Viewer::computeNormalsByAreaWeights()
             vec_b = pos_second - pos_center;
 
             tri_normal = -cross(vec_a, vec_b);
-
-            float area_tri = 0.5 * norm(tri_normal);
+            area_tri = 0.5 * norm(tri_normal);
 
             vert_normal += area_tri * normalize(tri_normal);
 
