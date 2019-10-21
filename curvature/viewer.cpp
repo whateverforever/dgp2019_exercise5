@@ -213,8 +213,7 @@ void Viewer::computeNormalsByAreaWeights()
 
             tri_normal = -cross(vec_a, vec_b);
 
-            float angle = acos(dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b)));
-            float area_tri = 0.5 * norm(tri_normal) / sin(angle);
+            float area_tri = 0.5 * norm(tri_normal);
 
             vert_normal += area_tri * normalize(tri_normal);
 
