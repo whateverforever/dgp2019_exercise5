@@ -348,7 +348,14 @@ void Viewer::calc_mean_curvature()
 
         } while (++he_vert_circ != he_vert_circ_end);
 
-        v_curvature[v] = norm(laplace_vec) / (2 * v_weight[v]);
+        float curvature = norm(laplace_vec) / (2 * v_weight[v]);
+        v_curvature[v] = curvature;
+
+        if (curvature > max_mean_curvature) {
+            max_mean_curvature = curvature;
+        } else if (curvature < min_mean_curvature) {
+            min_mean_curvature = curvature;
+        }
     }
 }
 
