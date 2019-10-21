@@ -400,7 +400,7 @@ void Viewer::calc_gauss_curvature()
             Vec3f vec1 = normalize(p1 - pos_center);
             Vec3f vec2 = normalize(p2 - pos_center);
 
-            float incident_angle = acos(min(0.99f, max(-0.99f, dot(vec1, vec2))));
+            float incident_angle = acos(dot(vec1, vec2));
             sum_incident_angles += incident_angle;
 
         } while (++he_circulator != he_circulator_end);
