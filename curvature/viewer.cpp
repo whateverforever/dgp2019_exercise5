@@ -159,7 +159,7 @@ void Viewer::computeNormalsWithConstantWeights()
             vec_a = pos_center - pos_first;
             vec_b = pos_second - pos_center;
 
-            tri_normal = cross(vec_a, vec_b);
+            tri_normal = normalize(cross(vec_a, vec_b));
 
             vert_normal += tri_normal;
             num_tris++;
