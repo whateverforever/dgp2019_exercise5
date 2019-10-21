@@ -241,6 +241,48 @@ void Viewer::computeNormalsWithAngleWeights()
     // Compute the normals for each vertex v in the mesh using the weights proportionals
     // to the angles technique (see .pdf) and store it inside v_angle_weights_n[v]
     // ------------- IMPLEMENT HERE ---------
+
+    Mesh::Halfedge he_out, he_back, he_next;
+    Point pos_center, pos_first, pos_second;
+    Vec3f vec_a, vec_b, tri_normal;
+
+    for (auto v : mesh.vertices())
+    {
+        Mesh::Halfedge_around_vertex_circulator he_vert_circ, he_vert_circ_end;
+
+        he_vert_circ = mesh.halfedges(v);
+        he_vert_circ_end = he_vert_circ;
+
+        Vec3f vert_normal(0.0, 0.0, 0.0);
+        float sum_area = 0.0;
+
+        pos_center = mesh.position(v);
+
+        do
+        {
+            he_out = *he_vert_circ;
+            he_back = mesh.opposite_halfedge(he_out);
+            he_next = mesh.next_halfedge(he_back);
+
+            pos_first = mesh.position(mesh.to_vertex(he_out));
+            pos_second = mesh.position(mesh.to_vertex(he_next));
+
+            vec_a = pos_center - pos_first;
+            vec_b = pos_second - pos_center;
+
+            tri_normal = cross(vec_a, vec_b);
+
+            float angle = acos(dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b)));
+            float area_tri = 0.5 * norm(tri_normal) / sin(angle);
+
+            vert_normal += area_tri * tri_normal;
+            sum_area += area_tri;
+
+        } while (++he_vert_circ != he_vert_circ_end);
+
+        v_area_weights_n[v] = vert_normal / sum_area;
+        v_area_weights_n[v] = normalize(v_area_weights_n[v]);
+    }
 }
 
 // ========================================================================
