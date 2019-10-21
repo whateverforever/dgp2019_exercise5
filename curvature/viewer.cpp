@@ -397,14 +397,15 @@ void Viewer::calc_gauss_curvature()
             Vec3f p1 = mesh.position(mesh.to_vertex(he_outwards));
             Vec3f p2 = mesh.position(mesh.to_vertex(he_next));
 
-            Vec3f vec1 = p1 - pos_center;
-            Vec3f vec2 = p2 - pos_center;
+            Vec3f vec1 = normalize(p1 - pos_center);
+            Vec3f vec2 = normalize(p2 - pos_center);
 
-            float incident_angle = acos(dot(vec1, vec2) / (norm(vec1) * norm(vec2)));
+            float incident_angle = acos(min(0.99f, max(-0.99f, dot(vec1, vec2))));
             sum_incident_angles += incident_angle;
 
         } while (he_circulator != he_circulator_end);
 
-        float angle_defect = (2 * M_PI - sum_incident_angles);
+        float gauss_curvature = (2 * M_PI - sum_incident_angles) * v_weight[v] * 2;
+        v_gauss_curvature[v] = gauss_curvature;
     }
 }
