@@ -197,7 +197,6 @@ void Viewer::computeNormalsByAreaWeights()
         he_vert_circ_end = he_vert_circ;
 
         Vec3f vert_normal(0.0, 0.0, 0.0);
-        int num_tris = 0;
         float sum_area = 0.0;
 
         pos_center = mesh.position(v);
@@ -219,8 +218,7 @@ void Viewer::computeNormalsByAreaWeights()
             float angle = acos(dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b)));
             float area_tri = 0.5 * norm(tri_normal) / sin(angle);
 
-            vert_normal += tri_normal;
-            num_tris += 1;
+            vert_normal += area_tri * tri_normal;
             sum_area += area_tri;
 
         } while (++he_vert_circ != he_vert_circ_end);
