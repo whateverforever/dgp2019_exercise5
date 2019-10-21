@@ -387,12 +387,24 @@ void Viewer::calc_gauss_curvature()
         he_circulator_end = he_circulator;
 
         Vec3f pos_center = mesh.position(v);
+        float sum_incident_angles = 0.0;
 
         do {
             Mesh::Halfedge he_outwards = *he_circulator;
             Mesh::Halfedge he_inwards = mesh.opposite_halfedge(he_outwards);
             Mesh::Halfedge he_next = mesh.next_halfedge(he_inwards);
 
+            Vec3f p1 = mesh.position(mesh.to_vertex(he_outwards));
+            Vec3f p2 = mesh.position(mesh.to_vertex(he_next));
+
+            Vec3f vec1 = p1 - pos_center;
+            Vec3f vec2 = p2 - pos_center;
+
+            float incident_angle = acos(dot(vec1, vec2) / (norm(vec1) * norm(vec2)));
+            sum_incident_angles += incident_angle;
+
         } while (he_circulator != he_circulator_end);
+
+        float angle_defect = (2 * M_PI - sum_incident_angles);
     }
 }
