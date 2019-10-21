@@ -380,4 +380,19 @@ void Viewer::calc_gauss_curvature()
     // you pass to the acos function is between -1.0 and 1.0.
     // Use the v_weight property for the area weight.
     // ------------- IMPLEMENT HERE ---------
+    for (auto v : mesh.vertices()) {
+        Mesh::Halfedge_around_vertex_circulator he_circulator, he_circulator_end;
+
+        he_circulator = mesh.halfedges(v);
+        he_circulator_end = he_circulator;
+
+        Vec3f pos_center = mesh.position(v);
+
+        do {
+            Mesh::Halfedge he_outwards = *he_circulator;
+            Mesh::Halfedge he_inwards = mesh.opposite_halfedge(he_outwards);
+            Mesh::Halfedge he_next = mesh.next_halfedge(he_inwards);
+
+        } while (he_circulator != he_circulator_end);
+    }
 }
