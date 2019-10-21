@@ -311,6 +311,8 @@ void Viewer::calc_uniform_laplacian()
         } while (++vert_circ != vert_circ_end);
 
         centroid /= num_neighbours;
+
+        v_uniLaplace[v] = norm(centroid);
     }
 }
 
