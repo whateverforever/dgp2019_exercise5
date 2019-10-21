@@ -312,7 +312,18 @@ void Viewer::calc_uniform_laplacian()
 
         centroid /= num_neighbours;
 
-        v_uniLaplace[v] = norm(centroid);
+        float norm_curvature = norm(centroid);
+
+        v_uniLaplace[v] = norm_curvature;
+
+        if (norm_curvature < min_uniLaplace)
+        {
+            min_uniLaplace = norm_curvature;
+        }
+        else if (norm_curvature > max_uniLaplace)
+        {
+            max_uniLaplace = norm_curvature;
+        }
     }
 }
 
