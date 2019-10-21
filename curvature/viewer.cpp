@@ -295,6 +295,22 @@ void Viewer::calc_uniform_laplacian()
 
     for (auto v : mesh.vertices())
     {
+        Mesh::Vertex_around_vertex_circulator vert_circ(&mesh, v);
+        Mesh::Vertex_around_vertex_circulator vert_circ_end = vert_circ;
+
+        Vec3f centroid(0.0, 0.0, 0.0);
+        int num_neighbours = 0;
+
+        do
+        {
+            Vec3f delta_vec = mesh.position(*vert_circ) - mesh.position(v);
+
+            centroid += delta_vec;
+            num_neighbours += 1;
+
+        } while (++vert_circ != vert_circ_end);
+
+        centroid /= num_neighbours;
     }
 }
 
