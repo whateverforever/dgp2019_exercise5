@@ -336,6 +336,16 @@ void Viewer::calc_mean_curvature()
 
         he_vert_circ = mesh.halfedges(v);
         he_vert_circ_end = he_vert_circ;
+
+        float sum_weights = 0;
+
+        do {
+            Mesh::Edge outward_edge = mesh.edge(*he_vert_circ);
+            sum_weights += e_weight[outward_edge];
+
+        } while (++he_vert_circ != he_vert_circ_end);
+
+        v_curvature[v] = sum_weights;
     }
 }
 
