@@ -331,6 +331,12 @@ void Viewer::calc_mean_curvature()
     // Save your approximation in v_curvature vertex property of the mesh.
     // Use the weights from calc_weights(): e_weight and v_weight
     // ------------- IMPLEMENT HERE ---------
+    for (auto v : mesh.vertices()) {
+        Mesh::Halfedge_around_vertex_circulator he_vert_circ, he_vert_circ_end;
+
+        he_vert_circ = mesh.halfedges(v);
+        he_vert_circ_end = he_vert_circ;
+    }
 }
 
 // ========================================================================
