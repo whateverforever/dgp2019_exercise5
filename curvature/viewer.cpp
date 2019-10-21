@@ -292,6 +292,10 @@ void Viewer::calc_uniform_laplacian()
     // mesh called v_uniLaplace[v].
     // Store min and max values of v_uniLaplace[v] in min_uniLaplace and max_uniLaplace.
     // ------------- IMPLEMENT HERE ---------
+
+    for (auto v : mesh.vertices())
+    {
+    }
 }
 
 // ========================================================================
