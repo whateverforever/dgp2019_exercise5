@@ -337,15 +337,18 @@ void Viewer::calc_mean_curvature()
         he_vert_circ = mesh.halfedges(v);
         he_vert_circ_end = he_vert_circ;
 
-        float sum_weights = 0;
+        Vec3f laplace_vec(0.0, 0.0, 0.0);
+        Vec3f pos_center = mesh.position(v);
 
         do {
             Mesh::Edge outward_edge = mesh.edge(*he_vert_circ);
-            sum_weights += e_weight[outward_edge];
+            Vec3f pos_outward = mesh.position(mesh.to_vertex(*he_vert_circ));
+
+            laplace_vec += (pos_outward - pos_center) * e_weight[outward_edge];
 
         } while (++he_vert_circ != he_vert_circ_end);
 
-        v_curvature[v] = sum_weights;
+        v_curvature[v] = norm(laplace_vec) / (2 * v_weight[v]);
     }
 }
 
