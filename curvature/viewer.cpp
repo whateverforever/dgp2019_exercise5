@@ -156,7 +156,7 @@ void Viewer::computeNormalsWithConstantWeights()
             pos_first = mesh.position(mesh.to_vertex(he_out));
             pos_second = mesh.position(mesh.to_vertex(he_next));
 
-            vec_a = pos_first - pos_center;
+            vec_a = pos_center - pos_first;
             vec_b = pos_second - pos_center;
 
             tri_normal = cross(vec_a, vec_b);
@@ -167,6 +167,7 @@ void Viewer::computeNormalsWithConstantWeights()
         } while (++he_vert_circ != he_vert_circ_end);
 
         v_cste_weights_n[v] = vert_normal / num_tris;
+        v_cste_weights_n[v] = normalize(v_cste_weights_n[v]);
     }
 }
 
