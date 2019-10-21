@@ -166,8 +166,7 @@ void Viewer::computeNormalsWithConstantWeights()
 
         } while (++he_vert_circ != he_vert_circ_end);
 
-        v_cste_weights_n[v] = vert_normal;
-        v_cste_weights_n[v] = normalize(v_cste_weights_n[v]);
+        v_cste_weights_n[v] = normalize(vert_normal);
     }
 }
 
@@ -209,10 +208,10 @@ void Viewer::computeNormalsByAreaWeights()
             pos_first = mesh.position(mesh.to_vertex(he_out));
             pos_second = mesh.position(mesh.to_vertex(he_next));
 
-            vec_a = pos_center - pos_first;
+            vec_a = pos_first - pos_center;
             vec_b = pos_second - pos_center;
 
-            tri_normal = cross(vec_a, vec_b);
+            tri_normal = -cross(vec_a, vec_b);
 
             float angle = acos(dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b)));
             float area_tri = 0.5 * norm(tri_normal) / sin(angle);
@@ -221,8 +220,7 @@ void Viewer::computeNormalsByAreaWeights()
 
         } while (++he_vert_circ != he_vert_circ_end);
 
-        v_area_weights_n[v] = vert_normal;
-        v_area_weights_n[v] = normalize(v_area_weights_n[v]);
+        v_area_weights_n[v] = normalize(vert_normal);
     }
 }
 
@@ -274,8 +272,7 @@ void Viewer::computeNormalsWithAngleWeights()
             vert_normal += angle * normalize(tri_normal);
         } while (++he_vert_circ != he_vert_circ_end);
 
-        v_angle_weights_n[v] = vert_normal;
-        v_angle_weights_n[v] = normalize(v_angle_weights_n[v]);
+        v_angle_weights_n[v] = normalize(vert_normal);
     }
 }
 
