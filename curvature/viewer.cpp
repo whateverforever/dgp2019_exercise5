@@ -403,9 +403,9 @@ void Viewer::calc_gauss_curvature()
             float incident_angle = acos(min(0.99f, max(-0.99f, dot(vec1, vec2))));
             sum_incident_angles += incident_angle;
 
-        } while (he_circulator != he_circulator_end);
+        } while (++he_circulator != he_circulator_end);
 
-        float gauss_curvature = (2 * M_PI - sum_incident_angles) * v_weight[v];
+        float gauss_curvature = (2 * M_PI - sum_incident_angles) * v_weight[v] * 2;
         v_gauss_curvature[v] = gauss_curvature;
 
         if (gauss_curvature > max_gauss_curvature) {
